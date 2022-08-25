@@ -7,18 +7,21 @@ const Container = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: space-evenly; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
+  justify-content: center; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
   align-items: center; //수직축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
 `;
 
-const CoinsList = styled.ul``;
+const CoinsList = styled.ul`
+  padding: 0px 20px;
+  max-width: 400px;
+  margin: 0 auto;
+`;
 
 const Coin = styled.li`
   background-color: white;
   color: ${(prop) => prop.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
-  max-width: 400px;
   a {
     transition: color 0.3s ease-in; //정해진 시간 동안 요소의 속성값을 부드럽게 변화 참고 http://www.tcpschool.com/css/css3_transform_transition
     padding: 20px; // li위에 마우스를 올리면 글자가 아니더라도 Link할 수 있게 해줌
@@ -69,10 +72,7 @@ export function Coins() {
   return (
     <Container>
       <Header>
-        <img src={require("../img/GoBack.png")} alt="goBack" />
         <Title>코인</Title>
-        <p />
-        {/** justify-content: space-between; 으로 <Title>코인 을 중앙으로 위치하게 하기 위한 p태그 */}
       </Header>
       <CoinsList>
         {coins.map((coin) => (
