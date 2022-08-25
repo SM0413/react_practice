@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { json } from "stream/consumers";
 import styled, { keyframes } from "styled-components";
 
 const animation = keyframes`
@@ -53,12 +52,21 @@ const Coin = styled.li`
   a {
     transition: color 0.3s ease-in; //정해진 시간 동안 요소의 속성값을 부드럽게 변화 참고 http://www.tcpschool.com/css/css3_transform_transition
     padding: 20px; // li위에 마우스를 올리면 글자가 아니더라도 Link할 수 있게 해줌
-    display: block;
+    display: flex;
+    align-items: center;
   }
   &:hover {
     a {
       color: ${(prop) => prop.theme.accentColor};
     }
+    img {
+      animation: ${animation} 3s linear infinite;
+    }
+  }
+  img {
+    width: 23px;
+    height: 23px;
+    margin-right: 10px;
   }
 `;
 
@@ -101,7 +109,13 @@ export function Coins() {
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={coin.id}>{coin.name} &rarr;</Link>
+              <Link to={coin.id} state={{ name: coin.name }}>
+                <img
+                  src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
+                  alt={`${coin.id}.img`}
+                />
+                {coin.name} &rarr;
+              </Link>
             </Coin>
           ))}
         </CoinsList>
