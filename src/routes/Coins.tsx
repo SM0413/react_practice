@@ -1,7 +1,35 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { json } from "stream/consumers";
+import styled, { keyframes } from "styled-components";
+
+const animation = keyframes`
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+`;
+
 const Container = styled.div`
   padding: 0 10px; //위, 아래는 0 / 좌우는 10씩 padding을 줌 참고 http://www.tcpschool.com/css/css_boxmodel_padding
+`;
+
+const Box = styled.div`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-top: 10vh;
+  img {
+    max-width: 300px;
+    position: absolute;
+    animation: ${animation} 1s linear infinite;
+  }
+  span {
+    color: ${(prop) => prop.theme.textColor};
+    font-size: 20px;
+  }
 `;
 
 const Header = styled.header`
@@ -39,48 +67,45 @@ const Title = styled.h1`
   color: ${(color) => color.theme.accentColor};
 `;
 
-const coins = [
-  {
-    id: "btc-bitcoin",
-    name: "Bitcoin",
-    symbol: "BTC",
-    rank: 1,
-    is_new: false,
-    is_active: true,
-    type: "coin",
-  },
-  {
-    id: "eth-ethereum",
-    name: "Ethereum",
-    symbol: "ETH",
-    rank: 2,
-    is_new: false,
-    is_active: true,
-    type: "coin",
-  },
-  {
-    id: "hex-hex",
-    name: "HEX",
-    symbol: "HEX",
-    rank: 3,
-    is_new: false,
-    is_active: true,
-    type: "token",
-  },
-];
+interface ICoins {
+  id: string;
+  name: string;
+  symbol: string;
+  rank: number;
+  is_new: boolean;
+  is_active: boolean;
+  type: string;
+}
 export function Coins() {
+  const [coins, setCoins] = useState<ICoins[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("https://api.coinpaprika.com/v1/coins");
+      const json = await response.json();
+      setCoins(json.slice(0, 100));
+      setLoading(false);
+    })();
+  }, []);
   return (
     <Container>
       <Header>
         <Title>코인</Title>
       </Header>
-      <CoinsList>
-        {coins.map((coin) => (
-          <Coin key={coin.id}>
-            <Link to={coin.id}>{coin.name} &rarr;</Link>
-          </Coin>
-        ))}
-      </CoinsList>
+      {loading ? (
+        <Box>
+          <img src={require("../img/Loading.png")} alt="Loading" />
+          <span>Loading....</span>
+        </Box>
+      ) : (
+        <CoinsList>
+          {coins.map((coin) => (
+            <Coin key={coin.id}>
+              <Link to={coin.id}>{coin.name} &rarr;</Link>
+            </Coin>
+          ))}
+        </CoinsList>
+      )}
     </Container>
   );
 }
