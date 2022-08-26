@@ -8,6 +8,7 @@ export function Router() {
       <Routes>
         <Route path="/" element={<Coins />} />
         <Route path=":coinId" element={<Coin />} />
+        <Route path=":coinId/*" element={<Coin />} />
       </Routes>
     </BrowserRouter>
   );

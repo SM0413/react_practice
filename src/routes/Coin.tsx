@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { Chart } from "./Chart";
+import { Price } from "./Price";
 const animation = keyframes`
   from{
     transform: rotate(0deg);
@@ -12,11 +14,14 @@ const animation = keyframes`
 
 const Container = styled.div`
   padding: 0 10px; //위, 아래는 0 / 좌우는 10씩 padding을 줌 참고 http://www.tcpschool.com/css/css_boxmodel_padding
+  max-width: 480px;
+  margin: auto;
 `;
 const Title = styled.h1`
   font-size: 48px;
   color: ${(color) => color.theme.accentColor};
 `;
+
 const Box = styled.div`
   justify-content: center;
   align-items: center;
@@ -36,12 +41,34 @@ const Box = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: space-around; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
+  justify-content: space-between; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
   align-items: center; //수직축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
   span {
     font-size: 20px;
     color: tomato;
   }
+`;
+
+const Overview = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+const OverviewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span:first-child {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+`;
+const Description = styled.p`
+  margin: 20px 0px;
 `;
 
 interface IPrams {
@@ -128,18 +155,15 @@ export function Coin() {
       console.log(priceData);
       setLoading(false);
     })();
-  }, []);
+  }, [coinId]);
+
   return (
     <Container>
       <Header>
         <Link to={"/"}>
           <img src={require("../img/GoBack.png")} alt="goBack" />
         </Link>
-        <Title>
-          {state?.name || (
-            <span> State가 존재하지 않습니다. 뒤로가기를 눌러주세요.</span>
-          )}
-        </Title>
+        <Title>{state?.name ? state.name : loading ? null : info?.name}</Title>
         {/** justify-content: space-between; 으로 <Title>코인 을 중앙으로 위치하게 하기 위한 p태그 */}
         <p />
       </Header>
@@ -148,7 +172,39 @@ export function Coin() {
           <img src={require("../img/Loading.png")} alt="Loading" />
           <span>Loading....</span>
         </Box>
-      ) : null}
+      ) : (
+        <>
+          <Overview>
+            <OverviewItem>
+              <span>Rank:</span>
+              <span>{info?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Symbol:</span>
+              <span>${info?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Open Source:</span>
+              <span>{info?.open_source ? "Yes" : "No"}</span>
+            </OverviewItem>
+          </Overview>
+          <Description>{info?.description}</Description>
+          <Overview>
+            <OverviewItem>
+              <span>Total Suply:</span>
+              <span>{price?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Max Supply:</span>
+              <span>{price?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+          <Routes>
+            <Route path={"price"} element={<Price />} />
+            <Route path={"chart"} element={<Chart />} />
+          </Routes>
+        </>
+      )}
     </Container>
   );
 }

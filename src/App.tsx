@@ -57,6 +57,10 @@ body{
   color: ${(prop) => prop.theme.textColor};
 
 }
+h1{
+	font-family: 'Black Han Sans', sans-serif;
+	font-weight: bolder;
+}
 a{
   text-decoration: none;
   color: inherit;
