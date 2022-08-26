@@ -6,8 +6,8 @@ export function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Coins />} />
-        <Route path=":coinId/*" element={<Coin />} />
+        <Route path="react_practice" element={<Coins />} />
+        <Route path="react_practice/:coinId/*" element={<Coin />} />
       </Routes>
     </BrowserRouter>
   );

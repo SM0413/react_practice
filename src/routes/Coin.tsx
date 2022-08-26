@@ -184,7 +184,7 @@ export function Coin() {
   return (
     <Container>
       <Header>
-        <Link to={"/"}>
+        <Link to={"/react_practice"}>
           <img src={require("../img/GoBack.png")} alt="goBack" />
         </Link>
         <Title>
