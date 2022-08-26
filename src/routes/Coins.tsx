@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
-const animation = keyframes`
+const animationRotate = keyframes`
   from{
     transform: rotate(0deg);
   }
@@ -23,7 +23,7 @@ const Box = styled.div`
   img {
     max-width: 300px;
     position: absolute;
-    animation: ${animation} 1s linear infinite;
+    animation: ${animationRotate} 1s linear infinite;
   }
   span {
     color: ${(prop) => prop.theme.textColor};
@@ -49,18 +49,20 @@ const Coin = styled.li`
   color: ${(prop) => prop.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
+
   a {
-    transition: color 0.3s ease-in; //정해진 시간 동안 요소의 속성값을 부드럽게 변화 참고 http://www.tcpschool.com/css/css3_transform_transition
+    transition: color 0.1s ease-in; //정해진 시간 동안 요소의 속성값을 부드럽게 변화 참고 http://www.tcpschool.com/css/css3_transform_transition
     padding: 20px; // li위에 마우스를 올리면 글자가 아니더라도 Link할 수 있게 해줌
     display: flex;
     align-items: center;
   }
   &:hover {
     a {
+      font-weight: bolder;
       color: ${(prop) => prop.theme.accentColor};
     }
     img {
-      animation: ${animation} 3s linear infinite;
+      animation: ${animationRotate} 1s linear infinite;
     }
   }
   img {
@@ -84,6 +86,7 @@ interface ICoins {
   is_active: boolean;
   type: string;
 }
+
 export function Coins() {
   const [coins, setCoins] = useState<ICoins[]>([]);
   const [loading, setLoading] = useState(true);
