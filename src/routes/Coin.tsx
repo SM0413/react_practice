@@ -164,9 +164,9 @@ interface IPriceData {
 
 export function Coin() {
   const { coinId } = useParams<keyof IPrams>();
-  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const state = location.state as IRouteState;
+  const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<IInfoData>();
   const [price, setPrice] = useState<IPriceData>();
   const priceMatch = useMatch(":coinId/price");

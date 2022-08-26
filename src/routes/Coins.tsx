@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { fetchCoins } from "../api";
 
 const animationRotate = keyframes`
   from{
@@ -88,29 +89,20 @@ interface ICoins {
 }
 
 export function Coins() {
-  const [coins, setCoins] = useState<ICoins[]>([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
-      setCoins(json.slice(0, 100));
-      setLoading(false);
-    })();
-  }, []);
+  const { isLoading, data } = useQuery<ICoins[]>(["allCoins"], fetchCoins);
   return (
     <Container>
       <Header>
         <Title>코인</Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Box>
           <img src={require("../img/Loading.png")} alt="Loading" />
           <span>Loading....</span>
         </Box>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link to={coin.id} state={{ name: coin.name }}>
                 <img
