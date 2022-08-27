@@ -42,14 +42,28 @@ export function Chart({ coinId }: IPropsType) {
             grid: { show: false },
             stroke: {
               curve: "smooth",
-              width: 1,
+              width: 3,
             },
             xaxis: {
-              labels: { show: false },
+              labels: {
+                show: false,
+              },
+              categories: data?.map((price) => price.time_close),
+              type: "datetime",
             },
             yaxis: {
               show: false,
             },
+            fill: {
+              type: "gradient",
+              gradient: { gradientToColors: ["#f1c40f"], stops: [0, 100] },
+            },
+            tooltip: {
+              y: {
+                formatter: (value) => `$ ${value.toFixed(0)}`,
+              },
+            },
+            colors: ["#8e44ad"],
           }}
         />
       )}
