@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { fetchCoins } from "../api";
+import { fetchCoins } from "../api/coinAPI";
 
 const animationRotate = keyframes`
   from{

@@ -8,7 +8,7 @@ import {
   useParams,
 } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { fetchInfo, fetchPrice } from "../api";
+import { fetchInfo, fetchPrice } from "../api/coinAPI";
 import { Chart } from "./Chart";
 import { Price } from "./Price";
 const animation = keyframes`
@@ -235,7 +235,10 @@ export function Coin() {
           </Tabs>
           <Routes>
             <Route path={"price"} element={<Price />} />
-            <Route path={"chart"} element={<Chart />} />
+            <Route
+              path={"chart"}
+              element={<Chart coinId={coinId as string} />}
+            />
           </Routes>
         </>
       )}
