@@ -3,6 +3,7 @@ import { fetchCoinHistory } from "../api/coinAPI";
 import ApexChart from "react-apexcharts";
 interface IPropsType {
   coinId: string;
+  isDark: boolean;
 }
 
 interface ICoinHistory {
@@ -15,7 +16,8 @@ interface ICoinHistory {
   volume: string;
   market_cap: number;
 }
-export function Chart({ coinId }: IPropsType) {
+
+export function Chart({ coinId, isDark }: IPropsType) {
   const { isLoading, data } = useQuery<ICoinHistory[]>(
     ["Histroy Of", coinId],
     () => fetchCoinHistory(String(coinId))
@@ -32,7 +34,7 @@ export function Chart({ coinId }: IPropsType) {
             { name: "price", data: data?.map((price) => price.close) as [] }, //data에 값이 있다면 price.close값을 data에 값이 없다면 [](빈값)값을 입력한다.
           ]}
           options={{
-            theme: { mode: "dark" },
+            theme: { mode: isDark ? "dark" : "light" },
             chart: {
               height: 300,
               width: 500,

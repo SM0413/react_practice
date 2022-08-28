@@ -36,7 +36,7 @@ const Box = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: center; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
+  justify-content: space-evenly; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
   align-items: center; //수직축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
 `;
 
@@ -47,11 +47,11 @@ const CoinsList = styled.ul`
 `;
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${(prop) => prop.theme.bgColor};
+  background-color: ${(color) => color.theme.bgColor};
+  color: ${(prop) => prop.theme.textColor};
   border-radius: 15px;
   margin-bottom: 10px;
-
+  border: 1px solid ${(prop) => prop.theme.textColor};
   a {
     transition: color 0.1s ease-in; //정해진 시간 동안 요소의 속성값을 부드럽게 변화 참고 http://www.tcpschool.com/css/css3_transform_transition
     padding: 20px; // li위에 마우스를 올리면 글자가 아니더라도 Link할 수 있게 해줌
@@ -89,7 +89,12 @@ interface ICoins {
   type: string;
 }
 
-export function Coins() {
+interface ICoinsProps {
+  toggleDark: () => void;
+  isDark: boolean;
+}
+
+export function Coins({ toggleDark, isDark }: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoins[]>(["allCoins"], fetchCoins);
   return (
     <Container>
@@ -97,7 +102,21 @@ export function Coins() {
         <Title>코인</Title>
       </Helmet>
       <Header>
+        <p />
         <Title>코인</Title>
+        {isDark ? (
+          <img
+            onClick={toggleDark}
+            src={require("../img/darkmode.png")}
+            alt="presentmode"
+          />
+        ) : (
+          <img
+            onClick={toggleDark}
+            src={require("../img/lightmode.png")}
+            alt="presentmode"
+          />
+        )}
       </Header>
       {isLoading ? (
         <Box>

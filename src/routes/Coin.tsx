@@ -25,6 +25,7 @@ const Container = styled.div`
   padding: 0 10px; //위, 아래는 0 / 좌우는 10씩 padding을 줌 참고 http://www.tcpschool.com/css/css_boxmodel_padding
   max-width: 480px;
   margin: auto;
+  background-color: ${(color) => color.theme.bgColor};
 `;
 const Title = styled.h1`
   font-size: 48px;
@@ -61,7 +62,8 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(color) => color.theme.bgColor};
+  border: 1px solid ${(prop) => prop.theme.textColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -69,7 +71,9 @@ const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: ${(props) => props.theme.textColor};
   span:first-child {
+    color: ${(props) => props.theme.textColor};
     font-size: 10px;
     font-weight: 400;
     text-transform: uppercase;
@@ -91,8 +95,9 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
-  font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-weight: ${(props) => (props.isActive ? "bolder" : 200)};
+  background-color: ${(color) => color.theme.bgColor};
+  border: 1px solid ${(prop) => prop.theme.textColor};
   padding: 7px 0px;
   border-radius: 10px;
   color: ${(props) =>
@@ -164,12 +169,17 @@ interface IPriceData {
   };
 }
 
-export function Coin() {
+interface ICoinProps {
+  isDark: boolean;
+  toggleDark: () => void;
+}
+
+export function Coin({ isDark, toggleDark }: ICoinProps) {
   const { coinId } = useParams<keyof IPrams>();
   const location = useLocation();
   const state = location.state as IRouteState;
-  const priceMatch = useMatch(":coinId/price");
-  const chartMatch = useMatch(":coinId/chart");
+  const priceMatch = useMatch("react_practice/:coinId/price");
+  const chartMatch = useMatch("react_practice/:coinId/chart");
 
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
     [coinId, "Data"],
@@ -196,7 +206,19 @@ export function Coin() {
           {state?.name ? state.name : loading ? null : infoData?.name}
         </Title>
         {/** justify-content: space-between; 으로 <Title>코인 을 중앙으로 위치하게 하기 위한 p태그 */}
-        <p />
+        {isDark ? (
+          <img
+            onClick={toggleDark}
+            src={require("../img/darkmode.png")}
+            alt="presentmode"
+          />
+        ) : (
+          <img
+            onClick={toggleDark}
+            src={require("../img/lightmode.png")}
+            alt="presentmode"
+          />
+        )}
       </Header>
       {loading ? (
         <Box>
@@ -245,7 +267,7 @@ export function Coin() {
             />
             <Route
               path={"chart"}
-              element={<Chart coinId={coinId as string} />}
+              element={<Chart isDark={isDark} coinId={coinId as string} />}
             />
           </Routes>
         </>
