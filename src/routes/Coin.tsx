@@ -12,7 +12,7 @@ import styled, { keyframes } from "styled-components";
 import { fetchInfo, fetchPrice } from "../api/coinAPI";
 import { Chart } from "./Chart";
 import { Price } from "./Price";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
 const animation = keyframes`
   from{
@@ -187,8 +187,9 @@ export function Coin() {
     () => fetchPrice(String(coinId))
     // { refetchInterval: 5000 }
   );
-
   const loading = infoLoading || priceLoading;
+  const setIsDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setIsDarkAtom((prev) => !prev);
 
   return (
     <Container>
@@ -205,13 +206,13 @@ export function Coin() {
         {/** justify-content: space-between; 으로 <Title>코인 을 중앙으로 위치하게 하기 위한 p태그 */}
         {isDark ? (
           <img
-            onClick={toggleDark}
+            onClick={toggleDarkAtom}
             src={require("../img/darkmode.png")}
             alt="presentmode"
           />
         ) : (
           <img
-            onClick={toggleDark}
+            onClick={toggleDarkAtom}
             src={require("../img/lightmode.png")}
             alt="presentmode"
           />

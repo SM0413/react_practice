@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled, { keyframes } from "styled-components";
 import { fetchCoins } from "../api/coinAPI";
-import { isDarkAtom, toggleMode } from "../atoms";
+import { isDarkAtom } from "../atoms";
 
 const animationRotate = keyframes`
   from{
@@ -94,7 +94,8 @@ interface ICoins {
 export function Coins() {
   const { isLoading, data } = useQuery<ICoins[]>(["allCoins"], fetchCoins);
   const isDark = useRecoilValue(isDarkAtom);
-  const toggleDark = useRecoilValue(toggleMode);
+  const setIsDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setIsDarkAtom((prev) => !prev);
   return (
     <Container>
       <Helmet>
@@ -105,13 +106,13 @@ export function Coins() {
         <Title>코인</Title>
         {isDark ? (
           <img
-            onClick={toggleDark}
+            onClick={toggleDarkAtom}
             src={require("../img/darkmode.png")}
             alt="presentmode"
           />
         ) : (
           <img
-            onClick={toggleDark}
+            onClick={toggleDarkAtom}
             src={require("../img/lightmode.png")}
             alt="presentmode"
           />

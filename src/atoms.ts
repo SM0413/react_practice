@@ -4,8 +4,3 @@ export const isDarkAtom = atom({
   key: "isDark",
   default: false,
 });
-
-export const toggleMode = atom({
-  key: "toggleMode",
-  default: "lightmode",
-});
