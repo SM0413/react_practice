@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import {
   Link,
   Route,
@@ -177,12 +178,16 @@ export function Coin() {
   const { isLoading: priceLoading, data: priceData } = useQuery<IPriceData>(
     [coinId, "priceData"],
     () => fetchPrice(String(coinId))
+    // { refetchInterval: 5000 }
   );
 
   const loading = infoLoading || priceLoading;
 
   return (
     <Container>
+      <Helmet>
+        {state?.name ? state.name : loading ? null : infoData?.name}
+      </Helmet>
       <Header>
         <Link to={"/react_practice"}>
           <img src={require("../img/GoBack.png")} alt="goBack" />
@@ -210,8 +215,8 @@ export function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>{priceData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -234,7 +239,10 @@ export function Coin() {
             </Tab>
           </Tabs>
           <Routes>
-            <Route path={"price"} element={<Price />} />
+            <Route
+              path={"price"}
+              element={<Price coinId={coinId as string} />}
+            />
             <Route
               path={"chart"}
               element={<Chart coinId={coinId as string} />}

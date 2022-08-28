@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -92,6 +93,9 @@ export function Coins() {
   const { isLoading, data } = useQuery<ICoins[]>(["allCoins"], fetchCoins);
   return (
     <Container>
+      <Helmet>
+        <Title>코인</Title>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
