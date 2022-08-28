@@ -12,6 +12,8 @@ import styled, { keyframes } from "styled-components";
 import { fetchInfo, fetchPrice } from "../api/coinAPI";
 import { Chart } from "./Chart";
 import { Price } from "./Price";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atoms";
 const animation = keyframes`
   from{
     transform: rotate(0deg);
@@ -169,18 +171,13 @@ interface IPriceData {
   };
 }
 
-interface ICoinProps {
-  isDark: boolean;
-  toggleDark: () => void;
-}
-
-export function Coin({ isDark, toggleDark }: ICoinProps) {
+export function Coin() {
   const { coinId } = useParams<keyof IPrams>();
   const location = useLocation();
   const state = location.state as IRouteState;
   const priceMatch = useMatch("react_practice/:coinId/price");
   const chartMatch = useMatch("react_practice/:coinId/chart");
-
+  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
     [coinId, "Data"],
     () => fetchInfo(String(coinId))
@@ -267,7 +264,7 @@ export function Coin({ isDark, toggleDark }: ICoinProps) {
             />
             <Route
               path={"chart"}
-              element={<Chart isDark={isDark} coinId={coinId as string} />}
+              element={<Chart coinId={coinId as string} />}
             />
           </Routes>
         </>
