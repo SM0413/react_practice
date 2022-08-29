@@ -17,6 +17,8 @@ const animationRotate = keyframes`
 
 const Container = styled.div`
   padding: 0 10px; //위, 아래는 0 / 좌우는 10씩 padding을 줌 참고 http://www.tcpschool.com/css/css_boxmodel_padding
+  max-width: 400px;
+  margin: auto;
 `;
 
 const Box = styled.div`
@@ -38,7 +40,7 @@ const Box = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: space-evenly; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
+  justify-content: space-between; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
   align-items: center; //수직축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
 `;
 
