@@ -1,3 +1,4 @@
+import { hover } from "@testing-library/user-event/dist/hover";
 import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -42,6 +43,12 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between; //메인축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
   align-items: center; //수직축 방향으로 아이템을들 정렬하는 속성 참고 https://studiomeal.com/archives/197
+
+  img {
+    :hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const CoinsList = styled.ul`
